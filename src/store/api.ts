@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import type { RootState } from "./index";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "/api/v1",
+  baseUrl: "http://localhost:5001/api/v1",
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.token;
     if (token) {
@@ -60,6 +60,10 @@ export const api = createApi({
     "Supplier",
     "Purchase",
     "Sales",
+    "PurchaseReturn",
+    "SalesReturn",
+    "DueCollection",
+    "SupplierPayment",
     "Stock",
     "Reports",
   ],

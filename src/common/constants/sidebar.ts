@@ -7,6 +7,7 @@ import {
   Settings,
   Box,
   CreditCard,
+  Building2,
 } from "lucide-react";
 
 export interface SidebarItem {
@@ -110,7 +111,23 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
         to: "/reports/stock",
         permission: "reports:view",
       },
+      {
+        label: "Customer Report",
+        to: "/reports/customers",
+        permission: "reports:view",
+      },
+      {
+        label: "Supplier Report",
+        to: "/reports/suppliers",
+        permission: "reports:view",
+      },
     ],
+  },
+  {
+    label: "Organizations",
+    icon: Building2,
+    to: "/organizations",
+    permission: "superadmin_only",
   },
   {
     label: "Users",

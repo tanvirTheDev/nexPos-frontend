@@ -1,7 +1,32 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import { LoginPage } from "@modules/auth/pages/LoginPage";
 import { ProtectedRoute } from "@modules/auth/components/ProtectedRoute";
+import { RoleGuard } from "@modules/auth/components/RoleGuard";
 import { MainLayout } from "@common/components/layout/MainLayout";
+import { DashboardPage } from "@modules/dashboard/pages/DashboardPage";
+import { OrganizationPage } from "@modules/organization/pages/OrganizationPage";
+import { UserPage } from "@modules/user/pages/UserPage";
+import { ProductPage } from "@modules/product/pages/ProductPage";
+import { CategoryPage } from "@modules/product/pages/CategoryPage";
+import { UnitPage } from "@modules/product/pages/UnitPage";
+import { VATPage } from "@modules/product/pages/VATPage";
+import { CustomerPage } from "@modules/customer/pages/CustomerPage";
+import { SupplierPage } from "@modules/supplier/pages/SupplierPage";
+import { PurchasePage } from "@modules/purchase/pages/PurchasePage";
+import { SalePage } from "@modules/sale/pages/SalePage";
+import { PurchaseReturnPage } from "@modules/purchase-return/pages/PurchaseReturnPage";
+import { SalesReturnPage } from "@modules/sales-return/pages/SalesReturnPage";
+import { DueCollectionPage } from "@modules/due-collection/pages/DueCollectionPage";
+import { SupplierPaymentPage } from "@modules/supplier-payment/pages/SupplierPaymentPage";
+import { CurrentStockPage } from "@modules/stock/pages/CurrentStockPage";
+import { LowStockPage } from "@modules/stock/pages/LowStockPage";
+import { StockMovementsPage } from "@modules/stock/pages/StockMovementsPage";
+import { SalesReportPage } from "@modules/reports/pages/SalesReportPage";
+import { PurchaseReportPage } from "@modules/reports/pages/PurchaseReportPage";
+import { ProfitLossPage } from "@modules/reports/pages/ProfitLossPage";
+import { StockReportPage } from "@modules/reports/pages/StockReportPage";
+import { CustomerReportPage } from "@modules/reports/pages/CustomerReportPage";
+import { SupplierReportPage } from "@modules/reports/pages/SupplierReportPage";
 
 export const router = createBrowserRouter([
   {
@@ -20,112 +45,103 @@ export const router = createBrowserRouter([
           },
           {
             path: "/dashboard",
+            element: <DashboardPage />,
+          },
+          {
+            path: "/organizations",
             element: (
-              <div className="text-2xl font-bold">
-                Dashboard (Coming in Day 10)
-              </div>
-            ),
-          },
-          // Placeholder routes for sidebar navigation
-          {
-            path: "/products",
-            element: <div className="text-xl">Products (Coming Soon)</div>,
-          },
-          {
-            path: "/categories",
-            element: <div className="text-xl">Categories (Coming Soon)</div>,
-          },
-          {
-            path: "/units",
-            element: <div className="text-xl">Units (Coming Soon)</div>,
-          },
-          {
-            path: "/vat",
-            element: <div className="text-xl">VAT (Coming Soon)</div>,
-          },
-          {
-            path: "/customers",
-            element: <div className="text-xl">Customers (Coming Soon)</div>,
-          },
-          {
-            path: "/suppliers",
-            element: <div className="text-xl">Suppliers (Coming Soon)</div>,
-          },
-          {
-            path: "/purchase",
-            element: <div className="text-xl">Purchase (Coming Soon)</div>,
-          },
-          {
-            path: "/sales",
-            element: <div className="text-xl">Sales (Coming Soon)</div>,
-          },
-          {
-            path: "/purchase-return",
-            element: (
-              <div className="text-xl">Purchase Return (Coming Soon)</div>
-            ),
-          },
-          {
-            path: "/sales-return",
-            element: (
-              <div className="text-xl">Sales Return (Coming Soon)</div>
-            ),
-          },
-          {
-            path: "/due-collection",
-            element: (
-              <div className="text-xl">Due Collection (Coming Soon)</div>
-            ),
-          },
-          {
-            path: "/supplier-payment",
-            element: (
-              <div className="text-xl">Supplier Payment (Coming Soon)</div>
-            ),
-          },
-          {
-            path: "/stock/current",
-            element: (
-              <div className="text-xl">Current Stock (Coming Soon)</div>
-            ),
-          },
-          {
-            path: "/stock/low",
-            element: <div className="text-xl">Low Stock (Coming Soon)</div>,
-          },
-          {
-            path: "/stock/movements",
-            element: (
-              <div className="text-xl">Stock Movements (Coming Soon)</div>
-            ),
-          },
-          {
-            path: "/reports/sales",
-            element: (
-              <div className="text-xl">Sales Report (Coming Soon)</div>
-            ),
-          },
-          {
-            path: "/reports/purchase",
-            element: (
-              <div className="text-xl">Purchase Report (Coming Soon)</div>
-            ),
-          },
-          {
-            path: "/reports/profit-loss",
-            element: (
-              <div className="text-xl">Profit & Loss (Coming Soon)</div>
-            ),
-          },
-          {
-            path: "/reports/stock",
-            element: (
-              <div className="text-xl">Stock Report (Coming Soon)</div>
+              <RoleGuard roles={["SuperAdmin"]}>
+                <OrganizationPage />
+              </RoleGuard>
             ),
           },
           {
             path: "/users",
-            element: <div className="text-xl">Users (Coming Soon)</div>,
+            element: <UserPage />,
+          },
+          {
+            path: "/products",
+            element: <ProductPage />,
+          },
+          {
+            path: "/categories",
+            element: <CategoryPage />,
+          },
+          {
+            path: "/units",
+            element: <UnitPage />,
+          },
+          {
+            path: "/vat",
+            element: <VATPage />,
+          },
+          {
+            path: "/customers",
+            element: <CustomerPage />,
+          },
+          {
+            path: "/suppliers",
+            element: <SupplierPage />,
+          },
+          {
+            path: "/purchase",
+            element: <PurchasePage />,
+          },
+          {
+            path: "/sales",
+            element: <SalePage />,
+          },
+          {
+            path: "/purchase-return",
+            element: <PurchaseReturnPage />,
+          },
+          {
+            path: "/sales-return",
+            element: <SalesReturnPage />,
+          },
+          {
+            path: "/due-collection",
+            element: <DueCollectionPage />,
+          },
+          {
+            path: "/supplier-payment",
+            element: <SupplierPaymentPage />,
+          },
+          {
+            path: "/stock/current",
+            element: <CurrentStockPage />,
+          },
+          {
+            path: "/stock/low",
+            element: <LowStockPage />,
+          },
+          {
+            path: "/stock/movements",
+            element: <StockMovementsPage />,
+          },
+          {
+            path: "/reports/sales",
+            element: <SalesReportPage />,
+          },
+          {
+            path: "/reports/purchase",
+            element: <PurchaseReportPage />,
+          },
+          {
+            path: "/reports/profit-loss",
+            element: <ProfitLossPage />,
+          },
+          {
+            path: "/reports/stock",
+            element: <StockReportPage />,
+          },
+          {
+            path: "/reports/customers",
+            element: <CustomerReportPage />,
+          },
+          {
+            path: "/reports/suppliers",
+            element: <SupplierReportPage />,
           },
           {
             path: "/settings",

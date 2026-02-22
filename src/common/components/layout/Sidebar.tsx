@@ -21,6 +21,7 @@ const SidebarLink = ({ item, depth = 0 }: { item: SidebarItem; depth?: number })
 
   const hasPermission = (permission?: string) => {
     if (!permission) return true;
+    if (permission === "superadmin_only") return user?.role === "SuperAdmin";
     if (user?.role === "SuperAdmin") return true;
     if (user?.role === "OrgAdmin") return true;
     return user?.permissions?.includes(permission) || false;
