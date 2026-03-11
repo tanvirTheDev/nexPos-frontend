@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import type { RootState } from "./index";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost:5001/api/v1",
+  baseUrl: import.meta.env.VITE_API_URL,
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.token;
     if (token) {
@@ -12,7 +12,11 @@ const baseQuery = fetchBaseQuery({
   },
 });
 
-const baseQueryWithReauth = async (args: any, apiObj: any, extraOptions: any) => {
+const baseQueryWithReauth = async (
+  args: any,
+  apiObj: any,
+  extraOptions: any,
+) => {
   let result = await baseQuery(args, apiObj, extraOptions);
 
   if (result.error && result.error.status === 401) {
@@ -26,7 +30,7 @@ const baseQueryWithReauth = async (args: any, apiObj: any, extraOptions: any) =>
           body: { refreshToken },
         },
         apiObj,
-        extraOptions
+        extraOptions,
       );
 
       if (refreshResult.data) {

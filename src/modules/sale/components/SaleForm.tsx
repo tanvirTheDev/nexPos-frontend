@@ -64,7 +64,7 @@ export const SaleForm = ({ onSubmit, isLoading }: SaleFormProps) => {
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<SaleFormData>({
+  } = useForm<z.input<typeof saleSchema>, unknown, SaleFormData>({
     resolver: zodResolver(saleSchema),
     defaultValues: {
       customerId: "",
@@ -81,15 +81,15 @@ export const SaleForm = ({ onSubmit, isLoading }: SaleFormProps) => {
     name: "items",
   });
 
-  const watchItems = watch("items");
-  const watchVat = watch("vatAmount");
+  const watchItems = watch("items") as SaleFormData["items"];
+  const watchVat = (watch("vatAmount") ?? 0) as number;
 
   const subtotal = watchItems.reduce(
     (sum, item) => sum + (item.quantity || 0) * (item.unitPrice || 0),
     0
   );
   const totalAmount = subtotal + (watchVat || 0);
-  const watchPaid = watch("paidAmount");
+  const watchPaid = (watch("paidAmount") ?? 0) as number;
   const dueAmount = totalAmount - (watchPaid || 0);
 
   const getProductById = (id: string): Product | undefined =>

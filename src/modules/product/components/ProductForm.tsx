@@ -58,16 +58,13 @@ export const ProductForm = ({
   const { data: categories } = useGetCategoriesQuery();
   const { data: units } = useGetUnitsQuery();
   const { data: vats } = useGetVATsQuery();
-  console.log(categories);
-  console.log(units);
-  console.log(vats);
 
   const {
     register,
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<ProductFormData>({
+  } = useForm<z.input<typeof productSchema>, unknown, ProductFormData>({
     resolver: zodResolver(productSchema),
     defaultValues: product
       ? {

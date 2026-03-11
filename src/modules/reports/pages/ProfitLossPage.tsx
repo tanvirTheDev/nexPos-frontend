@@ -87,7 +87,11 @@ export const ProfitLossPage = () => {
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="productName" tick={{ fontSize: 11 }} angle={-20} textAnchor="end" height={60} />
                     <YAxis tick={{ fontSize: 12 }} />
-                    <Tooltip formatter={(value: number) => `$${value.toFixed(2)}`} />
+                    <Tooltip
+                      formatter={(value) =>
+                        typeof value === "number" ? `$${value.toFixed(2)}` : String(value)
+                      }
+                    />
                     <Legend />
                     <Bar dataKey="revenue" name="Revenue" fill="#22c55e" radius={[4, 4, 0, 0]} />
                     <Bar dataKey="cost" name="Cost" fill="#ef4444" radius={[4, 4, 0, 0]} />

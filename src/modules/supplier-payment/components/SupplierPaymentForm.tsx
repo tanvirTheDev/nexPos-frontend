@@ -19,7 +19,9 @@ const supplierPaymentSchema = z.object({
   supplierId: requiredSelect("Supplier is required"),
   purchaseId: z.string().optional(),
   amount: z.coerce.number().min(0.01, "Amount must be greater than 0"),
-  paymentMethod: requiredSelect("Payment method is required"),
+  paymentMethod: z.enum(["cash", "card", "bank"], {
+    message: "Payment method is required",
+  }),
   notes: z.string().optional(),
   paymentDate: z.string().min(1, "Payment date is required"),
 });
@@ -27,7 +29,7 @@ const supplierPaymentSchema = z.object({
 type SupplierPaymentFormData = z.infer<typeof supplierPaymentSchema>;
 
 interface SupplierPaymentFormProps {
-  onSubmit: (data: SupplierPaymentFormData) => void;
+  onSubmit: (data: SupplierPaymentFormData) => void | Promise<void>;
   isLoading?: boolean;
 }
 
@@ -40,13 +42,17 @@ export const SupplierPaymentForm = ({ onSubmit, isLoading }: SupplierPaymentForm
 
   const {
     register, control, handleSubmit, watch, formState: { errors },
-  } = useForm<SupplierPaymentFormData>({
+  } = useForm<
+    z.input<typeof supplierPaymentSchema>,
+    unknown,
+    SupplierPaymentFormData
+  >({
     resolver: zodResolver(supplierPaymentSchema),
     defaultValues: {
       supplierId: "",
       purchaseId: "",
       amount: 0,
-      paymentMethod: "",
+      paymentMethod: undefined,
       notes: "",
       paymentDate: new Date().toISOString().split("T")[0],
     },

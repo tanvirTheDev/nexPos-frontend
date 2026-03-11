@@ -54,8 +54,6 @@ interface PurchaseFormProps {
 export const PurchaseForm = ({ onSubmit, isLoading }: PurchaseFormProps) => {
   const { data: suppliersData } = useGetSuppliersQuery();
   const { data: productsData } = useGetProductsQuery();
-  console.log(suppliersData);
-  console.log(productsData);
 
   const suppliers = suppliersData?.data || [];
   const products = productsData?.data || [];
@@ -66,7 +64,7 @@ export const PurchaseForm = ({ onSubmit, isLoading }: PurchaseFormProps) => {
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<PurchaseFormData>({
+  } = useForm<z.input<typeof purchaseSchema>, unknown, PurchaseFormData>({
     resolver: zodResolver(purchaseSchema),
     defaultValues: {
       supplierId: "",
@@ -83,15 +81,15 @@ export const PurchaseForm = ({ onSubmit, isLoading }: PurchaseFormProps) => {
     name: "items",
   });
 
-  const watchItems = watch("items");
-  const watchVat = watch("vatAmount");
+  const watchItems = watch("items") as PurchaseFormData["items"];
+  const watchVat = (watch("vatAmount") ?? 0) as number;
 
   const subtotal = watchItems.reduce(
     (sum, item) => sum + (item.quantity || 0) * (item.unitPrice || 0),
     0,
   );
   const totalAmount = subtotal + (watchVat || 0);
-  const watchPaid = watch("paidAmount");
+  const watchPaid = (watch("paidAmount") ?? 0) as number;
   const dueAmount = totalAmount - (watchPaid || 0);
 
   const getProductById = (id: string): Product | undefined =>

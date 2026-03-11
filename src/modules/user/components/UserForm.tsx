@@ -32,10 +32,11 @@ const updateUserSchema = z.object({
 
 type CreateUserFormData = z.infer<typeof createUserSchema>;
 type UpdateUserFormData = z.infer<typeof updateUserSchema>;
+type UserFormData = CreateUserFormData | UpdateUserFormData;
 
 interface UserFormProps {
   user?: UserRecord;
-  onSubmit: (data: CreateUserFormData | UpdateUserFormData) => void;
+  onSubmit: (data: UserFormData) => void;
   isLoading?: boolean;
   mode: "org-admin" | "admin";
 }
@@ -58,7 +59,7 @@ export const UserForm = ({
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<CreateUserFormData>({
+  } = useForm<UserFormData>({
     resolver: zodResolver(schema),
     defaultValues: user
       ? {

@@ -96,7 +96,11 @@ export const SalesReportPage = () => {
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="date" tick={{ fontSize: 12 }} />
                     <YAxis tick={{ fontSize: 12 }} />
-                    <Tooltip formatter={(value: number) => `$${value.toFixed(2)}`} />
+                    <Tooltip
+                      formatter={(value) =>
+                        typeof value === "number" ? `$${value.toFixed(2)}` : String(value)
+                      }
+                    />
                     <Bar dataKey="amount" fill="#3b82f6" radius={[4, 4, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>

@@ -49,7 +49,7 @@ export const SalesReturnForm = ({ onSubmit, isLoading }: SalesReturnFormProps) =
 
   const {
     register, control, handleSubmit, watch, formState: { errors },
-  } = useForm<SalesReturnFormData>({
+  } = useForm<z.input<typeof salesReturnSchema>, unknown, SalesReturnFormData>({
     resolver: zodResolver(salesReturnSchema),
     defaultValues: {
       saleId: "",
@@ -61,8 +61,8 @@ export const SalesReturnForm = ({ onSubmit, isLoading }: SalesReturnFormProps) =
   });
 
   const { fields, append, remove } = useFieldArray({ control, name: "items" });
-  const watchItems = watch("items");
-  const watchVat = watch("vatAmount");
+  const watchItems = watch("items") as SalesReturnFormData["items"];
+  const watchVat = (watch("vatAmount") ?? 0) as number;
 
   const subtotal = watchItems.reduce(
     (sum, item) => sum + (item.quantity || 0) * (item.unitPrice || 0), 0

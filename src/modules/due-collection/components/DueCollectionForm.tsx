@@ -19,7 +19,9 @@ const dueCollectionSchema = z.object({
   customerId: requiredSelect("Customer is required"),
   saleId: z.string().optional(),
   amount: z.coerce.number().min(0.01, "Amount must be greater than 0"),
-  paymentMethod: requiredSelect("Payment method is required"),
+  paymentMethod: z.enum(["cash", "card", "bank"], {
+    message: "Payment method is required",
+  }),
   notes: z.string().optional(),
   collectionDate: z.string().min(1, "Collection date is required"),
 });
@@ -27,7 +29,7 @@ const dueCollectionSchema = z.object({
 type DueCollectionFormData = z.infer<typeof dueCollectionSchema>;
 
 interface DueCollectionFormProps {
-  onSubmit: (data: DueCollectionFormData) => void;
+  onSubmit: (data: DueCollectionFormData) => void | Promise<void>;
   isLoading?: boolean;
 }
 
@@ -40,13 +42,13 @@ export const DueCollectionForm = ({ onSubmit, isLoading }: DueCollectionFormProp
 
   const {
     register, control, handleSubmit, watch, formState: { errors },
-  } = useForm<DueCollectionFormData>({
+  } = useForm<z.input<typeof dueCollectionSchema>, unknown, DueCollectionFormData>({
     resolver: zodResolver(dueCollectionSchema),
     defaultValues: {
       customerId: "",
       saleId: "",
       amount: 0,
-      paymentMethod: "",
+      paymentMethod: undefined,
       notes: "",
       collectionDate: new Date().toISOString().split("T")[0],
     },

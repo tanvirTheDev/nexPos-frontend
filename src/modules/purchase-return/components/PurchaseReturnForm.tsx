@@ -57,7 +57,7 @@ export const PurchaseReturnForm = ({ onSubmit, isLoading }: PurchaseReturnFormPr
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<PurchaseReturnFormData>({
+  } = useForm<z.input<typeof purchaseReturnSchema>, unknown, PurchaseReturnFormData>({
     resolver: zodResolver(purchaseReturnSchema),
     defaultValues: {
       purchaseId: "",
@@ -69,8 +69,8 @@ export const PurchaseReturnForm = ({ onSubmit, isLoading }: PurchaseReturnFormPr
   });
 
   const { fields, append, remove } = useFieldArray({ control, name: "items" });
-  const watchItems = watch("items");
-  const watchVat = watch("vatAmount");
+  const watchItems = watch("items") as PurchaseReturnFormData["items"];
+  const watchVat = (watch("vatAmount") ?? 0) as number;
 
   const subtotal = watchItems.reduce(
     (sum, item) => sum + (item.quantity || 0) * (item.unitPrice || 0), 0
